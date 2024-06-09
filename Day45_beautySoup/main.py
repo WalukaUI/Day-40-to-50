@@ -5,9 +5,10 @@ res =requests.get("https://news.ycombinator.com/news")
 web_page = res.text
 
 soup = BeautifulSoup(web_page, "html.parser")
-span = soup.select_one(".titleline")
-print(span.select_one("a").text)
-print(span.select_one("a").get("href"))
+articles = soup.find_all(name="span", class_="titleline")
+
+for tag in articles:
+    print(tag.select_one("a").getText())
 
 #
 # with open("website.html", encoding='utf-8')as file:
