@@ -9,3 +9,10 @@ res = requests.get(URL)
 webpage = res.text
 
 soup = BeautifulSoup(webpage, "html.parser")
+h3_list = soup.find_all(name="h3", class_="title")
+all_movies = [h3.getText() for h3 in h3_list][::-1]
+print(all_movies)
+
+with open("movie.txt", mode="w")as file:
+    for movie in all_movies:
+        file.write(f"{movie}\n")
