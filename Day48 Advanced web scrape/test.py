@@ -18,7 +18,7 @@ for x in range(len(ev_time)):
     new_lst[x] = {"time": ev_time[x].text, "name": ev_name[x].text}
 
 print(new_lst)
-#-------------TEST------------------
+
 
 
 
