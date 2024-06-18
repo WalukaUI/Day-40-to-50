@@ -2,7 +2,6 @@ from selenium import webdriver
 import time
 from selenium.webdriver.common.by import By
 
-
 # keep browser open after program finishes
 chrome_options = webdriver.ChromeOptions()
 chrome_options.add_experimental_option("detach", True)
@@ -22,29 +21,54 @@ marks = int(get_marks)
 
 productids = []
 prices = []
+items = []
+
+
+# while marks < num:
+#     driver.find_element(By.ID, value="bigCookie").click()
+#     marks = int(driver.find_element(By.ID, value="cookies").text.split(" ")[0])
+#     if marks % 100 == 0:
+#         items = driver.find_elements(by=By.CSS_SELECTOR, value="#store #products .unlocked .content .price")
+#         if len(items) > 0:
+#             for x in items:
+#                 productids.append(x.get_attribute("id"))
+#                 prices.append(int(x.text))
+#         num = prices.index(min(prices))
+#         min_price = min(prices)
+#         while marks > min_price:
+#             driver.find_element(By.ID, value="bigCookie").click()
+#             time.sleep(0.1)
+#             driver.find_element(By.ID, value=f"product{num}").click()
+#             marks = int(driver.find_element(By.ID, value="cookies").text.split(" ")[0])
+#         productids = []
+#         prices = []
+
+def check_price():
+    global productids
+    global prices
+    global items
+    productids = []
+    prices = []
+    items = []
+    items = driver.find_elements(by=By.CSS_SELECTOR, value="#store #products .unlocked .content .price")
+    if len(items) > 0:
+        for x in items:
+            productids.append(x.get_attribute("id"))
+            prices.append(int(x.text))
+        min_price_idx = prices.index(min(prices))
+        min_price = min(prices)
+        make_clicks(min_price, min_price_idx)
+
+
+def make_clicks(min_price, min_price_idx):
+    global marks
+    while marks > min_price:
+        driver.find_element(By.ID, value=f"product{min_price_idx}").click()
+        marks = int(driver.find_element(By.ID, value="cookies").text.split(" ")[0])
+
 
 while marks < num:
     driver.find_element(By.ID, value="bigCookie").click()
     marks = int(driver.find_element(By.ID, value="cookies").text.split(" ")[0])
     if marks % 100 == 0:
-        items = driver.find_elements(by=By.CSS_SELECTOR, value="#store #products .unlocked .content .price")
-        if len(items) > 0:
-            for x in items:
-                productids.append(x.get_attribute("id"))
-                prices.append(int(x.text))
-        num = prices.index(min(prices))
-        min_price = min(prices)
-        while marks > min_price:
-            driver.find_element(By.ID, value="bigCookie").click()
-            time.sleep(0.1)
-            driver.find_element(By.ID, value=f"product{num}").click()
-            marks = int(driver.find_element(By.ID, value="cookies").text.split(" ")[0])
-        productids = []
-        prices = []
-
-
-
-
-
-
-
+        check_price()
